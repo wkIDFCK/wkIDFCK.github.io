@@ -14,9 +14,9 @@
   
   
   
-    <meta name="description" content>
+    <meta name="description" content="Floyd 代码实现1234567891011121314151617181920212223242526272829#include &lt;stdio.h&gt;#include &lt;stdlib.h&gt;#define N ../*    D 和 Path， D记录最短路径长度，初始化为邻接矩阵    ，path记录两顶点间最短路径上经过的中间顶点*/void floyd(gra...">
   
-  <title>并查集（after watching the video of dengshen） [ 烟风雨沫 ]</title>
+  <title>Floyd 代码实现 [ 烟风雨沫 ]</title>
   
   
     <link rel="shortcut icon" href="/hollow.ico">
@@ -35,22 +35,13 @@
 <body>
 <div class="side-navigate hide-area">
   
-    <div class="item prev">
-      <a href="/2019/07/01/typora简易手册/">
-        <div class="item-icon"></div>
-      </a>
-      <div class="item-title">
-        typora简易手册
-      </div>
-    </div>
-  
   
     <div class="item next">
-      <a href="/2019/06/30/my-review-of-Mr-s-yang/">
+      <a href="/2019/07/02/dijkstra/">
         <div class="item-icon"></div>
       </a>
       <div class="item-title">
-        my review of Mr.s yang
+        dijkstra
       </div>
     </div>
   
@@ -120,37 +111,37 @@
   
 
   <article id="post">
-    <h1>并查集（after watching the video of dengshen）</h1>
+    <h1>Floyd 代码实现</h1>
     <p class="page-title-sub">
-      <span id="post-title-date">Created at 2019-07-01</span>
+      <span id="post-title-date">Created at 2019-07-02</span>
       
-        <span id="post-title-updated">Updated at 2019-07-01</span>
+        <span id="post-title-updated">Updated at 2019-07-02</span>
       
       
       
     </p>
     
-    
+    <h1 id="Floyd-代码实现"><a href="#Floyd-代码实现" class="headerlink" title="Floyd 代码实现"></a>Floyd 代码实现</h1><figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;stdio.h&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;stdlib.h&gt;</span></span></span><br><span class="line"></span><br><span class="line"><span class="meta">#<span class="meta-keyword">define</span> N ..</span></span><br><span class="line"></span><br><span class="line"><span class="comment">/*</span></span><br><span class="line"><span class="comment">    D 和 Path， D记录最短路径长度，初始化为邻接矩阵</span></span><br><span class="line"><span class="comment">    ，path记录两顶点间最短路径上经过的中间顶点</span></span><br><span class="line"><span class="comment">*/</span></span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">floyd</span><span class="params">(graph G, <span class="keyword">int</span> Path[][])</span></span>&#123;</span><br><span class="line">    <span class="keyword">for</span>(i = <span class="number">0</span>; i &lt; N; i++)&#123;</span><br><span class="line">        <span class="keyword">for</span>( j = <span class="number">0</span>; j &lt; N; j++)&#123;</span><br><span class="line">            D[i][j] = G[i][j];</span><br><span class="line">            Path[i][j] = <span class="number">-1</span>;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">for</span>(k = <span class="number">0</span>; k &lt; N; k++)&#123;                             <span class="comment">//第k轮，将k节点插入i，j中间更新最短路															长度</span></span><br><span class="line">        <span class="keyword">for</span>(i = <span class="number">0</span>; i &lt; N; i++)&#123;</span><br><span class="line">            <span class="keyword">for</span>(j = <span class="number">0</span>; j &lt; N; j++)&#123;</span><br><span class="line">                <span class="keyword">if</span>(D[i][k] + D[k][j] &lt; D[i][j])&#123;         <span class="comment">//主要判断条件</span></span><br><span class="line">                     D[i][j] = D[i][k] + D[k][j];</span><br><span class="line">                     Path[i][j] = k;</span><br><span class="line">                &#125;</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+
   </article>
   <div class="random-toc-area">
   <button class="btn-hide-toc btn-hide-toc-show" style="display: none" onclick="TOCToggle()">Show TOC</button>
   <button class="btn-hide-toc btn-hide-toc-hide" onclick="TOCToggle()">Hide TOC</button>
   <div class="random-toc">
     <h2>Table of Content</h2>
-    
+    <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#Floyd-代码实现"><span class="toc-text">Floyd 代码实现</span></a></li></ol>
   </div>
 </div>
 
   
 <nav id="pagination">
   
-    <a href="/2019/07/01/typora简易手册/" class="prev">&larr; Prev post typora简易手册</a>
-  
 
   
 
   
-    <a href="/2019/06/30/my-review-of-Mr-s-yang/" class="next">Next post my review of Mr.s yang &rarr;</a>
+    <a href="/2019/07/02/dijkstra/" class="next">Next post dijkstra &rarr;</a>
   
 </nav>
 

@@ -1,0 +1,336 @@
+
+
+
+
+
+
+
+<!doctype html>
+<html lang>
+<head><meta name="generator" content="Hexo 3.9.0">
+  <meta http-equiv="Content-Type" content="text/html" charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  
+  
+  
+  
+    <meta name="description" content="dijkstra算法的一般原理及实现​    初始变量：VertexsNum      //顶点个数
+​                        Arc[VertexsNum] [VertexsNum]       //图的存储结构
+​                        S[VertexsNum] = {0};     //已考察顶点的标记，初始为0；若已考察，置1
+​  ...">
+  
+  <title>dijkstra [ 烟风雨沫 ]</title>
+  
+  
+    <link rel="shortcut icon" href="/hollow.ico">
+  
+  
+  <link rel="stylesheet" href="/css/random.css">
+<link rel="stylesheet" href="/css/vegas.min.css">
+<link rel="stylesheet" href="/css/highlight-railscasts.css">
+<link rel="stylesheet" href="/css/jquery.fancybox.css">
+<link rel="stylesheet" href="/css/iconfont/iconfont.css">
+<link rel="stylesheet" href="/css/jquery.fancybox-thumbs.css">
+<link rel="stylesheet" href="/css/plyr.css">
+  
+</head>
+
+<body>
+<div class="side-navigate hide-area">
+  
+    <div class="item prev">
+      <a href="/2019/07/02/Floyd-代码实现/">
+        <div class="item-icon"></div>
+      </a>
+      <div class="item-title">
+        Floyd 代码实现
+      </div>
+    </div>
+  
+  
+    <div class="item next">
+      <a href="/2019/07/01/typora简易手册/">
+        <div class="item-icon"></div>
+      </a>
+      <div class="item-title">
+        typora简易手册
+      </div>
+    </div>
+  
+</div>
+<div id="outer-container" class="hide-area">
+<div id="container">
+  <div id="menu-outer" class="slide-down">
+    <div id="menu-inner">
+      <div id="brand">
+        
+        <a onclick="openUserCard()">
+          <img id="avatar" src="https://avatars3.githubusercontent.com/u/13285397?s=460&v=4">
+          <div id="homelink">烟风雨沫</div>
+        </a>
+      </div>
+      <div id="menu-list">
+        <ul>
+        
+        
+          
+            <li>
+          
+            <a href="/index.html">Home</a>
+            
+          </li>
+        
+          
+            <li>
+          
+            <a href="/archives">Archives</a>
+            
+          </li>
+        
+          
+            <li>
+          
+            <a href="/tags">Tags</a>
+            
+          </li>
+        
+          
+            <li>
+          
+            <a href="/categories">Categories</a>
+            
+          </li>
+        
+          
+            <li>
+          
+            <a href="https://github.com/wkIDFCK">Github</a>
+            
+          </li>
+        
+        </ul>
+      </div>
+      <div id="show-menu">
+        <button>Menu</button>
+      </div>
+    </div>
+  </div>
+
+  <div id="content-outer">
+    <div id="content-inner">
+      
+      
+  
+
+  <article id="post">
+    <h1>dijkstra</h1>
+    <p class="page-title-sub">
+      <span id="post-title-date">Created at 2019-07-02</span>
+      
+        <span id="post-title-updated">Updated at 2019-07-02</span>
+      
+      
+      
+    </p>
+    
+    <h1 id="dijkstra算法的一般原理及实现"><a href="#dijkstra算法的一般原理及实现" class="headerlink" title="dijkstra算法的一般原理及实现"></a>dijkstra算法的一般原理及实现</h1><p>​    初始变量：VertexsNum      //顶点个数</p>
+<p>​                        Arc[VertexsNum] [VertexsNum]       //图的存储结构</p>
+<p>​                        S[VertexsNum] = {0};     //已考察顶点的标记，初始为0；若已考察，置1</p>
+<p>​                        dist[VertexsNum]        //到该顶点当前的最小距离,dist[] 的初始值dist[i] = arcs[0][i]；</p>
+<p>​                        path[VertexsNum]    //表示到该顶点当前最短路径的前驱节点</p>
+<hr>
+<h3 id="1-原理"><a href="#1-原理" class="headerlink" title="1. 原理"></a>1. 原理</h3><h4 id="step-1"><a href="#step-1" class="headerlink" title="step 1:"></a>step 1:</h4><p>​        将源点的S[]数组对应位置置1，dist[] 的初始值dist[i] = arcs[0][i]；</p>
+<h4 id="step2"><a href="#step2" class="headerlink" title="step2:"></a>step2:</h4><p>​        从顶点集合V-S中选出Vj，该Vj满足dist[j] = Min{dist [i] | Vi ∈ V-S} ，将Vj并入S；</p>
+<h4 id="step3："><a href="#step3：" class="headerlink" title="step3："></a>step3：</h4><p>​        修改从V0出发到集合V-S上其他顶点Vk可达的最短路径长度：如果dist[j] + arcs[j][k] &lt; dist[k]，则令dist[k] = dist[j] + arcs[j][k]；</p>
+<h4 id="step4："><a href="#step4：" class="headerlink" title="step4："></a>step4：</h4><p>​        重复 2~3，共操作n - 1次，直到所有顶点都包含在S中。</p>
+<h3 id="c代码伪码"><a href="#c代码伪码" class="headerlink" title="c代码伪码"></a>c代码伪码</h3><figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;stdio.h&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;stdlib.h&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span><span class="meta-string">&lt;math.h&gt;</span></span></span><br><span class="line"></span><br><span class="line"><span class="meta">#<span class="meta-keyword">define</span> VERTEXS 5</span></span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">find_Min</span><span class="params">()</span></span>&#123;          <span class="comment">//对当前未检查序列权值进行排序</span></span><br><span class="line"></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">dijsktra</span><span class="params">(<span class="keyword">int</span> *arc, <span class="keyword">int</span> *dist, <span class="keyword">int</span> *S, <span class="keyword">int</span> *path)</span></span>&#123;</span><br><span class="line">    <span class="keyword">int</span> i, k;  <span class="comment">//循环变量</span></span><br><span class="line">    <span class="keyword">for</span>(i = <span class="number">0</span>; i &lt; VERTEXS - <span class="number">1</span>; i++)&#123;</span><br><span class="line">        sort(dist);  <span class="comment">//sort dist=&gt;V-S</span></span><br><span class="line"></span><br><span class="line">        <span class="keyword">int</span> j = find_Min();</span><br><span class="line">        s[j] = <span class="number">1</span>;  <span class="comment">//将顶点j并入已检查序列中</span></span><br><span class="line">        <span class="keyword">for</span>(k = <span class="number">0</span>; k &lt; VERTEXS - <span class="number">1</span>;k++)&#123;</span><br><span class="line">            <span class="keyword">if</span>(dist[j] + arcs[j][k] &lt; dist[k])&#123;</span><br><span class="line">                dist[k] = dist[j] + arcs[j][k];</span><br><span class="line">                path[k] = j;</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">main</span><span class="params">()</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    <span class="keyword">int</span> arc[VERTEXS][VERTEXS] = &#123;</span><br><span class="line">        &#123;&#125;, &#123;&#125;, &#123;&#125;, &#123;&#125;,...</span><br><span class="line">    &#125;;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">int</span> dist[VERTEXS] = &#123;&#125;;   <span class="comment">//到该顶点当前的最小距离,dist[] 的初始值dist[i] = arcs\[0][i]；</span></span><br><span class="line">    <span class="keyword">int</span> path[VERTEXS] = &#123;&#125;;   <span class="comment">//当前最短路径的前驱</span></span><br><span class="line">    <span class="keyword">int</span> S[VERTEXS] = &#123;<span class="number">0</span>&#125;;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+
+  </article>
+  <div class="random-toc-area">
+  <button class="btn-hide-toc btn-hide-toc-show" style="display: none" onclick="TOCToggle()">Show TOC</button>
+  <button class="btn-hide-toc btn-hide-toc-hide" onclick="TOCToggle()">Hide TOC</button>
+  <div class="random-toc">
+    <h2>Table of Content</h2>
+    <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#dijkstra算法的一般原理及实现"><span class="toc-text">dijkstra算法的一般原理及实现</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#1-原理"><span class="toc-text">1. 原理</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#step-1"><span class="toc-text">step 1:</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#step2"><span class="toc-text">step2:</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#step3："><span class="toc-text">step3：</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#step4："><span class="toc-text">step4：</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#c代码伪码"><span class="toc-text">c代码伪码</span></a></li></ol></li></ol>
+  </div>
+</div>
+
+  
+<nav id="pagination">
+  
+    <a href="/2019/07/02/Floyd-代码实现/" class="prev">&larr; Prev post Floyd 代码实现</a>
+  
+
+  
+
+  
+    <a href="/2019/07/01/typora简易手册/" class="next">Next post typora简易手册 &rarr;</a>
+  
+</nav>
+
+  <!-- JiaThis Button BEGIN -->
+
+<!-- JiaThis Button END -->
+
+
+      
+      
+    </div>
+  </div>
+
+  <div id="bottom-outer">
+    <div id="bottom-inner">
+      Site by  using
+      <a href="http://hexo.io">Hexo</a> & <a href="https://github.com/stiekel/hexo-theme-random">Random</a>
+      <br>
+      
+    </div>
+  </div>
+</div>
+
+</div>
+
+
+<div id="user-card">
+  <div class="center-field">
+    <img class="avatar" src="https://avatars3.githubusercontent.com/u/13285397?s=460&v=4">
+    <p id="description"></p>
+    <ul class="social-icon">
+  
+  
+    <li>
+      <a href="https://github.com/wkIDFCK">
+        
+          <i class="icon iconfont github">&#xe606;</i>
+        
+      </a>
+    </li>
+  
+    <li>
+      <a href="https://weibo.com/u/5411877023">
+        
+          <i class="icon iconfont weibo">&#xe602;</i>
+        
+      </a>
+    </li>
+  
+    <li>
+      <a href="null">
+        
+          M
+        
+      </a>
+    </li>
+  
+</ul>
+  </div>
+</div>
+
+
+<div id="btn-view">Hide</div>
+
+<script>
+// is trigger analytics / tongji script
+var isIgnoreHost = false;
+
+if(window && window.location && window.location.host) {
+  isIgnoreHost = ["localhost","127.0.0.1"].some(function(address){
+    return 0 === window.location.host.indexOf(address);
+  });
+}
+
+var isTriggerAnalytics = !( true && isIgnoreHost );
+
+</script>
+
+
+
+
+  
+  
+    <script src="/js/jquery-2.2.3.min.js"></script>
+  
+    <script src="/js/vegas.min.js"></script>
+  
+    <script src="/js/random.js"></script>
+  
+    <script src="/js/highlight.pack.js"></script>
+  
+    <script src="/js/jquery.mousewheel.pack.js"></script>
+  
+    <script src="/js/jquery.fancybox.pack.js"></script>
+  
+    <script src="/js/jquery.fancybox-thumbs.js"></script>
+  
+    <script src="/js/plyr.js"></script>
+  
+
+<script>
+
+  // fancybox
+  var backgroundImages = [];
+  
+  $('#post').each(function(i){
+    $(this).find('img').each(function(){
+      if ($(this).parent().hasClass('fancybox') || $(this).parent().hasClass('fancybox-thumb')) return;
+      var alt = this.alt || this.title;
+      if (alt) $(this).after('<span class="caption">' + alt + '</span>');
+      $(this).wrap('<a href="' + this.src + '" title="' + alt + '" class="fancybox"></a>');
+    });
+    $(this).find('.fancybox').each(function(){
+      $(this).attr('rel', 'post' + i);
+    });
+  });
+  $(".fancybox").fancybox();
+
+var vegasConfig = {"preload­Image":true,"transition":["flash"],"timer":true,"delay":1500000,"shuffle":true,"count":12};
+var unsplashConfig = {"gravity":"center"};
+// is show background images
+var turnoffBackgroundImage = false;
+
+
+
+
+var backgroundColor = "34495E";
+
+$(".fancybox-thumb").fancybox({
+  prevEffect: 'none',
+  nextEffect: 'none',
+  helpers: {
+    title: {
+      type: 'outside'
+    },
+    thumbs: {
+      width: 50,
+      height: 50
+    }
+  }
+});
+
+// show video with plyr
+$(".video-container iframe").each(function(i){
+  var url = $(this).attr('src');
+  var id = url.split('/').pop();
+  var plyrContainer = document.createElement('div');
+  plyrContainer.className = 'plyr';
+  var plyrElement = document.createElement('div');
+  plyrElement.dataset.videoId = id;
+  switch(true) {
+    case url.search('youtube.com') >= 0:
+      plyrElement.dataset.type = 'youtube';
+      break;
+    case url.search('vimeo.com') >= 0:
+      plyrElement.dataset.type = 'vimeo';
+      break;
+    default:
+      return;
+  };
+  plyrContainer.appendChild(plyrElement);
+  $(this).parent().html(plyrContainer);
+});
+plyr.setup('.plyr', {iconUrl: '/css/sprite.svg'});
+</script>
+</body>
+</html>
+
