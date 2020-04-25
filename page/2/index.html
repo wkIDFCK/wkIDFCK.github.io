@@ -229,7 +229,7 @@
   
   
   <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2019/06/30/长难句 之 简单句/">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2019/07/01/并查集（after-watching-the-video-of-dengshen）/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content>
@@ -248,7 +248,130 @@
         
           <h1 class="post-title" itemprop="name headline">
                 
-                <a class="post-title-link" href="/2019/06/30/长难句 之 简单句/" itemprop="url">长难句之一 简单句</a></h1>
+                <a class="post-title-link" href="/2019/07/01/并查集（after-watching-the-video-of-dengshen）/" itemprop="url">并查集（after watching the video of dengshen）</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">Posted on</span>
+              
+              <time title="Post created" itemprop="dateCreated datePublished" datetime="2019-07-01T22:53:58+08:00">
+                2019-07-01
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <h1 id="并查集视频观后有感"><a href="#并查集视频观后有感" class="headerlink" title="并查集视频观后有感"></a>并查集视频观后有感</h1><h3 id="原理"><a href="#原理" class="headerlink" title="原理"></a>原理</h3><p>​        采用双亲法存放图，核心数据结构是一个数组parents[vertexNum]，存放各个并查集中节点的双亲节点位置，若为根节点，则置为-1（初始均为-1，加入边时，需要合理规定谁为父节点）。</p>
+<p>​        建立寻根函数find_root，当压入边时，需要检查边的两个节点所在并查集的根节点是否一样，若一样，则位于同一并查集中，证明该图中存在环。否则当判断节点均位于同一并查集时，则图中不存在环。</p>
+<h3 id="代码实现"><a href="#代码实现" class="headerlink" title="代码实现"></a>代码实现</h3><figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;stdio.h&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;stdlib.h&gt;</span></span></span><br><span class="line"></span><br><span class="line"><span class="meta">#<span class="meta-keyword">define</span> VERTICES 6</span></span><br><span class="line"></span><br><span class="line"><span class="comment">/*</span></span><br><span class="line"><span class="comment">    initialize array of vertex parent</span></span><br><span class="line"><span class="comment">    and array of vertex rank</span></span><br><span class="line"><span class="comment">*/</span></span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">initialize</span><span class="params">(<span class="keyword">int</span> parents[], <span class="keyword">int</span> rank[])</span></span>&#123;</span><br><span class="line">    <span class="keyword">int</span> i;</span><br><span class="line">    <span class="keyword">for</span>(i = <span class="number">0</span>; i &lt; VERTICES; i++)&#123;</span><br><span class="line">        parents[i] = <span class="number">-1</span>;</span><br><span class="line">        rank[i] = <span class="number">0</span>;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">/*find root of vertex of arc to verdict*/</span></span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">find_x_root</span><span class="params">(<span class="keyword">int</span> parents[], <span class="keyword">int</span> x)</span></span>&#123;</span><br><span class="line">    <span class="keyword">int</span> x_root = x;</span><br><span class="line">    <span class="keyword">while</span>(parents[x_root] != <span class="number">-1</span>)&#123;</span><br><span class="line">        x_root = parents[x_root];</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">return</span> x_root;</span><br><span class="line">&#125;</span><br><span class="line"><span class="comment">/* union vertex set, 1 success 0 failed*/</span></span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">union_vertexSet</span><span class="params">(<span class="keyword">int</span> x, <span class="keyword">int</span> y, <span class="keyword">int</span> parent[], <span class="keyword">int</span> rank[])</span></span>&#123;</span><br><span class="line">    <span class="keyword">int</span> x_root = find_x_root(parent, x);</span><br><span class="line">    <span class="keyword">int</span> y_root = find_x_root(parent, y);</span><br><span class="line">    <span class="keyword">if</span>( x_root != y_root)&#123;</span><br><span class="line">        <span class="keyword">if</span>(rank[y_root] &gt; rank[x_root])&#123;</span><br><span class="line">            parent[x_root] = y_root;</span><br><span class="line">        &#125;<span class="keyword">else</span> <span class="keyword">if</span>(rank[y_root] &lt; rank[x_root])&#123;</span><br><span class="line">            parent[y_root] = x_root;</span><br><span class="line">        &#125;<span class="keyword">else</span>&#123;</span><br><span class="line">            parent[x_root] = y_root;</span><br><span class="line">            rank[y_root]++;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">return</span> <span class="number">1</span>;</span><br><span class="line">    &#125;<span class="keyword">else</span>&#123;</span><br><span class="line">        <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">main</span><span class="params">(<span class="keyword">void</span>)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    <span class="keyword">int</span> parents[VERTICES] = &#123;<span class="number">0</span>&#125;;</span><br><span class="line">    <span class="keyword">int</span> rank[VERTICES] = &#123;<span class="number">0</span>&#125;;</span><br><span class="line">    <span class="keyword">int</span> edges[<span class="number">6</span>][<span class="number">2</span>]=&#123;</span><br><span class="line">        &#123;<span class="number">0</span>, <span class="number">1</span>&#125;, &#123;<span class="number">1</span>, <span class="number">2</span>&#125;, &#123;<span class="number">1</span>, <span class="number">3</span>&#125;,</span><br><span class="line">        &#123;<span class="number">2</span>, <span class="number">4</span>&#125;,&#123;<span class="number">3</span>, <span class="number">4</span>&#125;, &#123;<span class="number">2</span>, <span class="number">5</span>&#125;,</span><br><span class="line">    &#125;;</span><br><span class="line">    initialize(parents, rank);</span><br><span class="line"></span><br><span class="line">    <span class="keyword">int</span> i;</span><br><span class="line">    <span class="keyword">for</span>(i = <span class="number">0</span>; i &lt; <span class="number">5</span>; i++)&#123;</span><br><span class="line">        <span class="keyword">int</span> x = edges[i][<span class="number">0</span>];</span><br><span class="line">        <span class="keyword">int</span> y = edges[i][<span class="number">1</span>];</span><br><span class="line">        <span class="keyword">if</span>(union_vertexSet(x, y, parents, rank) == <span class="number">0</span>)&#123;</span><br><span class="line">            <span class="built_in">printf</span>(<span class="string">"Cycle detected!\n"</span>);</span><br><span class="line">            <span class="built_in">exit</span>(<span class="number">0</span>);</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="built_in">printf</span>(<span class="string">"No cycles found.\n"</span>);</span><br><span class="line">    <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+
+          
+        
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2019/06/30/my-review-of-Mr-s-yang/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content>
+      <meta itemprop="description" content>
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="烟风雨沫">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2019/06/30/my-review-of-Mr-s-yang/" itemprop="url">my review of Mr.s yang</a></h1>
         
 
         <div class="post-meta">
@@ -300,117 +423,10 @@
       
         
           
-            <p>[TOC]</p>
-<h1 id="长难句-之-简单句"><a href="#长难句-之-简单句" class="headerlink" title="长难句 之 简单句"></a>长难句 之 简单句</h1><hr>
-<h2 id="一、五种基本结构"><a href="#一、五种基本结构" class="headerlink" title="一、五种基本结构"></a>一、五种基本结构</h2><ul>
-<li><h3 id="主谓"><a href="#主谓" class="headerlink" title="主谓"></a>主谓</h3></li>
-<li><h3 id="主谓宾"><a href="#主谓宾" class="headerlink" title="主谓宾"></a>主谓宾</h3></li>
-<li><h3 id="主谓表"><a href="#主谓表" class="headerlink" title="主谓表"></a>主谓表</h3><blockquote>
-<p>此处的谓语动词，特指系动词。</p>
-<p>区分与主谓宾的差别主要看谓语动词是系动词，还是实义动词。</p>
-</blockquote>
-</li>
-</ul>
-<h4 id="系动词分类"><a href="#系动词分类" class="headerlink" title="系动词分类"></a>系动词分类</h4><ol>
-<li><p>表示状态： be动词（链接主语和表语，无实意）</p>
-</li>
-<li><p>表示感官：look, sound, taste, smell, feel(感官动词后只能跟形容词)</p>
-</li>
-<li><p>表示变化：get, become, turn, grow, fall</p>
-</li>
-<li><p>表示保持：keep, stay, remain, stand</p>
-</li>
-<li><p>表示表象： seem, appear</p>
-</li>
-<li><p>表示终止：prove </p>
-</li>
-</ol>
-<ul>
-<li><h3 id="主谓双宾"><a href="#主谓双宾" class="headerlink" title="主谓双宾"></a>主谓双宾</h3><blockquote>
-<p>常用谓语动词：buy, pass, lend, give, tell, teach, show, bring, send等。</p>
-</blockquote>
-</li>
-</ul>
-<ul>
-<li><h3 id="主谓宾宾补"><a href="#主谓宾宾补" class="headerlink" title="主谓宾宾补"></a>主谓宾宾补</h3><blockquote>
-<p>宾补用于补充说明宾语的特点、身份，或让宾语完成某个动作。</p>
-<p>区分双宾和宾补方法：在两个成分中间加个系动词，看前后成分构成的结构是否通顺。</p>
-</blockquote>
-<p>ask sb to do sth</p>
-<p>want sb to do sth</p>
-<p>make sb sth</p>
-<p>make sb do sth</p>
-</li>
-</ul>
-<h2 id="二、句子成分"><a href="#二、句子成分" class="headerlink" title="二、句子成分"></a>二、句子成分</h2><ul>
-<li><h3 id="谓语"><a href="#谓语" class="headerlink" title="谓语"></a>谓语</h3><p>动词或者动词词组做谓语[^系动词或实意动词，非情态动词]</p>
-<p><strong>== 谓语就是具有时态的实义动词（或词组）或者系动词==</strong></p>
-</li>
-</ul>
-<blockquote>
-<p>谓语只能是动词，动词只能充当谓语。</p>
-<p>句子中不作谓语的动词成分 —— 需要变成非谓语动词结构</p>
-<ol>
-<li><p>动词后跟 -ing[^ 动词的现在分词]，表示主动或进行。</p>
-</li>
-<li><p>动词后跟 -ed[^ 动词的过去分词]，表示被动或完成。</p>
-</li>
-<li><p>动词后加 to[^ 动词不定式]，表示目的或将来。</p>
-<p>__ 非谓语结构可以充当除谓语外的所有成分 __</p>
-</li>
-</ol>
-</blockquote>
-<blockquote>
-<p>谓语必须是实义动词或系动词，并且必须有时态和语态。一句话中动词有且只能有一个，多余的变成非谓语结构，少了的就加<code>be</code>动词。</p>
-</blockquote>
-<ul>
-<li><h3 id="主语"><a href="#主语" class="headerlink" title="主语"></a>主语</h3><p>主语成分：名词、代词、非谓语结构</p>
-<p>主语能否缺失：</p>
-<ol>
-<li><p><code>it</code>作主语（描述天气），或者形式主语。</p>
-</li>
-<li><p><code>There Be</code> 句型，表示存在，并且主语比较模糊。</p>
-</li>
-<li><p>变主动为被动。</p>
-<figure class="highlight markdown"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">think -&gt; </span><br><span class="line"><span class="code">	argue,contend,assume, presume, insist, maintain, assert, claim, be of the option that, </span></span><br><span class="line"><span class="code">	have been convinced that, cling to the perspective that </span></span><br><span class="line">important -&gt; </span><br><span class="line"><span class="code">	be of great importance, vital, significant, essential, indispensable, </span></span><br><span class="line"><span class="code">	play a key role in sth</span></span><br></pre></td></tr></table></figure>
-
-<ol start="4">
-<li>加人称代词（万不得已）</li>
-</ol>
-</li>
-</ol>
-</li>
-</ul>
-<ul>
-<li><h3 id="宾语"><a href="#宾语" class="headerlink" title="宾语"></a>宾语</h3><p>能做宾语的成分和主语完全一样。</p>
-</li>
-</ul>
-<ul>
-<li><h3 id="表语"><a href="#表语" class="headerlink" title="表语"></a>表语</h3><p>表语成分：代词、名词（短语）、非谓语结构、形容词（短语）和介词短语。</p>
-</li>
-</ul>
-<h2 id="三、动词的时态（略）"><a href="#三、动词的时态（略）" class="headerlink" title="三、动词的时态（略）"></a>三、动词的时态（略）</h2><h2 id="四、动词的分类"><a href="#四、动词的分类" class="headerlink" title="四、动词的分类"></a>四、动词的分类</h2><ul>
-<li><h3 id="实义动词：表示具体动作，分为及物和不及物"><a href="#实义动词：表示具体动作，分为及物和不及物" class="headerlink" title="实义动词：表示具体动作，分为及物和不及物"></a>实义动词：表示具体动作，分为及物和不及物</h3></li>
-<li><h3 id="系动词，见本章第一节"><a href="#系动词，见本章第一节" class="headerlink" title="系动词，见本章第一节"></a>系动词，见本章第一节</h3></li>
-<li><h3 id="情态动词：表示说话人的主观态度"><a href="#情态动词：表示说话人的主观态度" class="headerlink" title="情态动词：表示说话人的主观态度"></a>情态动词：表示说话人的主观态度</h3><p>不能单独出现，必须和实义动词/系动词一起构成谓语。</p>
-<ol>
-<li>can/could -&gt; <code>be capable of, be competent in</code></li>
-<li>may/might -&gt; <code>be likely to</code></li>
-<li>must/have to -&gt; <code>be bound to, be bound for</code></li>
-<li>should/ought -&gt; <code>be supposed to, be obliged to</code></li>
-<li>would -&gt; <code>intend to</code></li>
-<li>need</li>
-<li>dare</li>
-</ol>
-<p>情态动词的完成时表示推测</p>
-<ul>
-<li>must have done：一定做过某事</li>
-<li>needn’t have done：本没必要做某事，但是已经做了</li>
-<li>couldn’t have done：本能够做某事，但是没有做，表示遗憾</li>
-<li>should have done：本应该做某事</li>
-</ul>
-</li>
-</ul>
+            <h1 id="这是一个人对于另外一个人的主观评价"><a href="#这是一个人对于另外一个人的主观评价" class="headerlink" title="这是一个人对于另外一个人的主观评价"></a>这是一个人对于另外一个人的主观评价</h1><h2 id="PART-01"><a href="#PART-01" class="headerlink" title="PART 01"></a><strong>PART 01</strong></h2><p>​    半年的室友</p>
+<h2 id="PART-02"><a href="#PART-02" class="headerlink" title="PART 02"></a><strong>PART 02</strong></h2><p>​    待人真诚的朋友</p>
+<h2 id="PART-03"><a href="#PART-03" class="headerlink" title="PART 03"></a><strong>PART 03</strong></h2><p>​    希望成为永远的兄弟（我兄他弟）</p>
+<h2 id="PART04"><a href="#PART04" class="headerlink" title="PART04"></a><strong>PART04</strong></h2><p>​    太过腼腆，自己活得很累</p>
 
           
         
@@ -628,7 +644,7 @@
               
                 <a href="/archives/">
               
-                  <span class="site-state-item-count">12</span>
+                  <span class="site-state-item-count">13</span>
                   <span class="site-state-item-name">posts</span>
                 </a>
               </div>
@@ -641,7 +657,7 @@
               
               <div class="site-state-item site-state-tags">
                 <a href="/tags/index.html">
-                  <span class="site-state-item-count">2</span>
+                  <span class="site-state-item-count">3</span>
                   <span class="site-state-item-name">tags</span>
                 </a>
               </div>
